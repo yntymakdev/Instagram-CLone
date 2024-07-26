@@ -7,9 +7,11 @@ import {
 const baseQuery = fetchBaseQuery({
 	baseUrl: `${process.env.NEXT_PUBLIC_API_URL}`,
 	prepareHeaders: (headers) => {
-		let token = JSON.parse(String(localStorage.getItem('accessToken')));
-		if (!token) {
-			token = JSON.parse(String(sessionStorage.getItem('accessToken')));
+		let token = null;
+		const localStorageData = JSON.parse(localStorage.getItem('tokens')!);
+		if (localStorageData) {
+			const { accessToken } = localStorageData;
+			token = accessToken;
 		}
 		if (token) {
 			headers.set('Authorization', `Bearer ${token}`);

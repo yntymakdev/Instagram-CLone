@@ -1,6 +1,6 @@
 import { FC, ReactNode, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { useGetMeQuery } from '@/redux/api/auth';
+import { useGetMeQuery, useRefreshTokenMutation } from '@/redux/api/auth';
 
 interface SessionProviderProps {
 	children: ReactNode;
@@ -8,8 +8,24 @@ interface SessionProviderProps {
 
 export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
 	const { status } = useGetMeQuery();
+	const [refreshTokenMutation] = useRefreshTokenMutation();
 	const pathname = usePathname();
 	const router = useRouter();
+
+	const handleRefreshToken = async () => {
+		const localStorageData = JSON.parse(localStorage.getItem('tokens')!);
+		if (localStorageData) {
+			const { accessTokenExpiration, refreshToken } = localStorageData;
+			if (accessTokenExpiration < new Date().getTime()) {
+				localStorage.removeItem('tokens');
+				const { data } = await refreshTokenMutation({ refreshToken });
+				localStorage.setItem('tokens', JSON.stringify(data));
+				window.location.reload();
+			} else {
+				console.log('refreshToken живой!');
+			}
+		}
+	};
 
 	const handleNavigation = () => {
 		switch (pathname) {
@@ -31,6 +47,10 @@ export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
 				break;
 		}
 	};
+
+	useEffect(() => {
+		handleRefreshToken();
+	}, [pathname]);
 
 	useEffect(() => {
 		handleNavigation();

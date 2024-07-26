@@ -8,7 +8,7 @@ interface IFormResetPassword {
 	newPassword: string;
 }
 
-const ResetPasswordPage = () => {
+const ResetPasswordForm = () => {
 	const [resetPasswordMutation] = useResetPasswordMutation();
 	const searchParams = useSearchParams();
 	const token = searchParams.get('token') || '';
@@ -31,18 +31,24 @@ const ResetPasswordPage = () => {
 	};
 
 	return (
+		<div>
+			<h1>ResetPasswordPage</h1>
+			<form onSubmit={handleSubmit(onSubmit)}>
+				<input
+					placeholder="new password"
+					type="text"
+					{...register('newPassword', { required: true })}
+				/>
+				<button type="submit">Сбросить пароль</button>
+			</form>
+		</div>
+	);
+};
+
+const ResetPasswordPage = () => {
+	return (
 		<Suspense fallback={<div>Loading...</div>}>
-			<div>
-				<h1>ResetPasswordPage</h1>
-				<form onSubmit={handleSubmit(onSubmit)}>
-					<input
-						placeholder="new password"
-						type="text"
-						{...register('newPassword', { required: true })}
-					/>
-					<button type="submit">Сбросить пароль</button>
-				</form>
-			</div>
+			<ResetPasswordForm />
 		</Suspense>
 	);
 };

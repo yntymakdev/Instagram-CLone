@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useResetPasswordMutation } from '@/redux/api/auth';
@@ -31,17 +31,19 @@ const ResetPasswordPage = () => {
 	};
 
 	return (
-		<div>
-			<h1>ResetPasswordPage</h1>
-			<form onSubmit={handleSubmit(onSubmit)}>
-				<input
-					placeholder="new password"
-					type="text"
-					{...register('newPassword', { required: true })}
-				/>
-				<button type="submit">Сбросить пароль</button>
-			</form>
-		</div>
+		<Suspense fallback={<div>Loading...</div>}>
+			<div>
+				<h1>ResetPasswordPage</h1>
+				<form onSubmit={handleSubmit(onSubmit)}>
+					<input
+						placeholder="new password"
+						type="text"
+						{...register('newPassword', { required: true })}
+					/>
+					<button type="submit">Сбросить пароль</button>
+				</form>
+			</div>
+		</Suspense>
 	);
 };
 

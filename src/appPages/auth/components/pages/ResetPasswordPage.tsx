@@ -11,7 +11,7 @@ interface IFormResetPassword {
 const ResetPasswordPage = () => {
 	const [resetPasswordMutation] = useResetPasswordMutation();
 	const searchParams = useSearchParams();
-	const token = searchParams.get('token');
+	const token = searchParams.get('token') || '';
 	const router = useRouter();
 	const { register, handleSubmit } = useForm<IFormResetPassword>();
 

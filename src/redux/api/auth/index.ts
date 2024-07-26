@@ -28,6 +28,24 @@ const api = index.injectEndpoints({
 			}),
 			invalidatesTags: ['auth']
 		}),
+		logout: build.mutation<AUTH.PostLogoutResponse, AUTH.PostLogoutRequest>({
+			query: () => ({
+				url: '/auth/logout',
+				method: 'POST'
+			}),
+			invalidatesTags: ['auth']
+		}),
+		refreshToken: build.mutation<
+			AUTH.PatchRefreshTokenResponse,
+			AUTH.PatchRefreshTokenRequest
+		>({
+			query: (refreshTokenData) => ({
+				url: '/auth/refresh',
+				method: 'PATCH',
+				body: refreshTokenData
+			}),
+			invalidatesTags: ['auth']
+		}),
 		forgot: build.mutation<AUTH.PostForgotResponse, AUTH.PostForgotRequest>({
 			query: (forgotData) => ({
 				url: '/auth/forgot',
@@ -46,17 +64,6 @@ const api = index.injectEndpoints({
 				body: resetPasswordData
 			}),
 			invalidatesTags: ['auth']
-		}),
-		refreshToken: build.mutation<
-			AUTH.PatchRefreshResponse,
-			AUTH.PatchRefreshRequest
-		>({
-			query: (refreshTokenData) => ({
-				url: '/auth/refresh',
-				method: 'PATCH',
-				body: refreshTokenData
-			}),
-			invalidatesTags: ['auth']
 		})
 	})
 });
@@ -65,7 +72,8 @@ export const {
 	useGetMeQuery,
 	useLoginMutation,
 	useRegisterMutation,
+	useLogoutMutation,
+	useRefreshTokenMutation,
 	useForgotMutation,
-	useResetPasswordMutation,
-	useRefreshTokenMutation
+	useResetPasswordMutation
 } = api;

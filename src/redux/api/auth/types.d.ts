@@ -25,6 +25,20 @@ namespace AUTH {
 		password: string;
 	};
 
+	type PostLogoutResponse = {
+		message: string;
+	};
+	type PostLogoutRequest = void;
+
+	type PatchRefreshTokenResponse = {
+		accessToken: string;
+		accessTokenExpiration: string;
+		refreshToken: string;
+	};
+	type PatchRefreshTokenRequest = {
+		refreshToken: string;
+	};
+
 	type PostForgotResponse = {
 		message: string;
 	};
@@ -39,14 +53,5 @@ namespace AUTH {
 	type PatchResetPasswordRequest = {
 		token: string;
 		newPassword: string;
-	};
-
-	type PatchRefreshResponse = {
-		accessToken: string;
-		accessTokenExpiration: string;
-		refreshToken: string;
-	};
-	type PatchRefreshRequest = {
-		refreshToken: string;
 	};
 }

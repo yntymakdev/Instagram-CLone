@@ -30,37 +30,16 @@
 					}
 				}
 			}
-			.nav {
-				ul {
-					display: flex;
-					gap: 50px;
-					justify-content: center;
-					align-items: center;
-					flex-wrap: wrap;
-					li {
-						.link {
-							padding: 12px 35px;
-							display: block;
-							background-image: linear-gradient(
-								to right,
-								#da22ff 0%,
-								#9733ee 51%,
-								#da22ff 100%
-							);
-							background-size: 200% auto;
-							border-radius: 10px;
-							// box-shadow: 0 0 20px #eee;
-							text-transform: uppercase;
-							color: white;
-							transition: 0.5s;
-
-							&:hover {
-								background-position: right center;
-							}
-						}
-					}
-				}
-			}
 		}
 	}
+}
+
+.head {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.home_mar {
+	color: aqua;
 }

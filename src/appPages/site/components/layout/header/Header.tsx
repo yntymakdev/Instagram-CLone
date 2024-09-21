@@ -5,21 +5,42 @@ import logo from '@/assets/logo.png';
 import Link from 'next/link';
 import { useGetMeQuery, useLogoutMutation } from '@/redux/api/auth';
 
-const links = [
-	{
-		name: 'Home',
-		href: '/'
-	},
-	{
-		name: 'About',
-		href: '/about'
-	}
-];
+// const links = [
+// 	{
+// 		element: (
+// 			<>
+// 				<div className="header">
+// 					<button className={scss.home_mar}>Home</button>
+// 				</div>
+// 			</>
+// 		),
+// 		href: '/'
+// 	},
+// 	{
+// 		element: (
+// 			<>
+// 				<div className="header">
+// 					<button className={scss.home_mar}>About</button>
+// 				</div>
+// 			</>
+// 		),
+// 		href: '/about'
+// 	},
+// 	{
+// 		element: (
+// 			<>
+// 				<div className="header">
+// 					<button className={scss.home_mar}>Profile</button>
+// 				</div>
+// 			</>
+// 		),
+// 		href: '/my-profile'
+// 	}
+// ];
 
 const Header: FC = () => {
 	const { data } = useGetMeQuery();
 	const [logoutMutation] = useLogoutMutation();
-
 	const logout = async () => {
 		await logoutMutation();
 		localStorage.removeItem('tokens');
@@ -34,16 +55,23 @@ const Header: FC = () => {
 						<div className={scss.logo}>
 							<Image src={logo} alt="logo" />
 						</div>
-						<nav className={scss.nav}>
-							<ul>
-								{links.map((item, index) => (
-									<li key={index}>
-										<Link className={scss.link} href={item.href}>
-											{item.name}
-										</Link>
-									</li>
-								))}
-							</ul>
+						<nav className={scss.head}>
+							<Link href={'/'}>
+								<h1>Home</h1>
+							</Link>
+							<Link href={'/about'}>
+								<h1>About</h1>
+							</Link>
+							<Link href={'/my-profile'}>
+								<h1>Profile</h1>
+							</Link>
+							{/* {links.map((item, index) => (
+								<div key={index}>
+									<Link className={scss.link} href={item.href}>
+										{item.element}
+									</Link>
+								</div>
+							))} */}
 						</nav>
 					</div>
 					<div className={scss.right}>
@@ -51,6 +79,12 @@ const Header: FC = () => {
 							{data ? (
 								<>
 									<h1>{data.profile.email}</h1>
+									<Image
+										width={40}
+										height={40}
+										src={data?.profile.photo}
+										alt="photo"
+									/>
 									<button onClick={logout}>Выход</button>
 								</>
 							) : (

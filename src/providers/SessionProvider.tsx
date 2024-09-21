@@ -1,4 +1,5 @@
-import { FC, ReactNode, useEffect } from 'react';
+'use client';
+import { FC, ReactNode, useEffect, useCallback } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useGetMeQuery, useRefreshTokenMutation } from '@/redux/api/auth';
 
@@ -12,8 +13,11 @@ export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
 	const pathname = usePathname();
 	const router = useRouter();
 
-	const handleRefreshToken = async () => {
+	const handleRefreshToken = useCallback(async () => {
 		const localStorageData = JSON.parse(localStorage.getItem('tokens')!);
+		if (localStorageData === 'undefined' || localStorageData === undefined) {
+			localStorage.removeItem('tokens');
+		}
 		if (localStorageData) {
 			const { accessTokenExpiration, refreshToken } = localStorageData;
 			if (accessTokenExpiration < new Date().getTime()) {
@@ -25,9 +29,9 @@ export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
 				console.log('refreshToken живой!');
 			}
 		}
-	};
+	}, [refreshTokenMutation]);
 
-	const handleNavigation = () => {
+	const handleNavigation = useCallback(() => {
 		switch (pathname) {
 			case '/auth/sign-in':
 			case '/auth/sign-up':
@@ -39,6 +43,8 @@ export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
 				break;
 			case '/':
 			case '/profile':
+			case '/create-post':
+			case '/profile/my-posts':
 				if (status === 'rejected') {
 					router.push('/auth/sign-in');
 				}
@@ -46,15 +52,15 @@ export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
 			default:
 				break;
 		}
-	};
+	}, [pathname, status, router]);
 
 	useEffect(() => {
 		handleRefreshToken();
-	}, [pathname]);
+	}, [pathname, handleRefreshToken]);
 
 	useEffect(() => {
 		handleNavigation();
-	}, [status, pathname, router]);
+	}, [status, pathname, router, handleNavigation]);
 
 	return children;
 };

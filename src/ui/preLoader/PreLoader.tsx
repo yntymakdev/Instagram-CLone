@@ -1,5 +1,5 @@
-import { FC } from "react";
-import scss from "./PreLoader.module.scss";
+import { FC } from 'react';
+import scss from './PreLoader.module.scss';
 
 const PreLoader: FC = () => {
 	return (

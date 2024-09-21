@@ -1,6 +1,7 @@
 'use client';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useLoginMutation } from '@/redux/api/auth';
+import Link from 'next/link';
 
 interface IFormInput {
 	email: string;
@@ -45,6 +46,8 @@ const SignInPage = () => {
 				/>
 				<button type="submit">Вход</button>
 			</form>
+			<Link href={'/auth/sign-up'}>У вас нет акканута </Link>
+			<Link href={'/auth/forgot'}>Забыл паролЬ</Link>
 		</section>
 	);
 };
